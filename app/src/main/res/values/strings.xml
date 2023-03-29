@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Irregular Verbs</string>
     <string name="english" translatable="false">English</string>
-    <string name="rusian" translatable="false">Русский</string>
-    <string name="chang" translatable="false">Change Language</string>
+    <string name="russian" translatable="false">Russian</string>
+    <string name="chinese" translatable="false">Chinese</string>
+    <string name="change" translatable="false">Change the language</string>
 </resources>
