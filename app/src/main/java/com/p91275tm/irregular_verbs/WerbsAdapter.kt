@@ -6,16 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.p91275tm.irregular_verbs.databinding.WordsBinding
+import java.util.*
+import kotlin.collections.ArrayList
 
 class WerbsAdapter: RecyclerView.Adapter<WerbsAdapter.WerbsHolder>() {
     private val list = ArrayList<Word>()
     class WerbsHolder(item: View): RecyclerView.ViewHolder(item) {
         private val binding = WordsBinding.bind(item)
         fun bind(words: Word) = with(binding){
-            baseForm.text = words.base_form
-            pastSimple.text = words.past_simple
-            pastParticiple.text =  words.past_participle
-            translation.text = words.translation
+            if (Locale.getDefault().language == "ru") {
+                baseForm.text = words.base_form
+                pastSimple.text = words.past_simple
+                pastParticiple.text = words.past_participle
+                translation.text = words.translation
+            }
+            else
+            {
+                baseForm.text = words.base_form
+                pastSimple.text = words.past_simple
+                pastParticiple.text = words.past_participle
+            }
         }
     }
 

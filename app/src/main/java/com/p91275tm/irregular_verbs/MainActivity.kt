@@ -1,8 +1,12 @@
 package com.p91275tm.irregular_verbs
 
+import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.asLiveData
@@ -13,6 +17,7 @@ import com.p91275tm.irregular_verbs.databinding.ActivityMainBinding
 import com.yandex.mobile.ads.banner.AdSize
 import com.yandex.mobile.ads.common.AdRequestError
 import com.yandex.mobile.ads.common.InitializationListener
+import java.util.*
 import com.yandex.mobile.ads.common.MobileAds as YandexMobileAds
 import com.yandex.mobile.ads.common.AdRequest as YandexAdRequst
 
@@ -25,10 +30,11 @@ class MainActivity : AppCompatActivity() {
     private val YANDEX_MOBILE_ADS_TAG = "YandexMobileAds"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         var isFirstRun = sharedPrefs.getBoolean("isFirstRun", true)
         if (isFirstRun) {
-            Thread{
+            Thread {
                 this.deleteDatabase("irregular_verbs")
                 completion()
             }.start()
@@ -46,6 +52,43 @@ class MainActivity : AppCompatActivity() {
         initadYandex()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.english -> {
+                val newLocale = Locale("en")
+                Locale.setDefault(newLocale)
+                val configuration = resources.configuration
+                configuration.setLocale(newLocale)
+                resources.updateConfiguration(configuration, resources.displayMetrics)
+                recreate()
+                return true
+            }
+            R.id.russian -> {
+                val newLocale = Locale("ru")
+                Locale.setDefault(newLocale)
+                val configuration = resources.configuration
+                configuration.setLocale(newLocale)
+                resources.updateConfiguration(configuration, resources.displayMetrics)
+                recreate()
+                return true
+            }
+            R.id.chinese -> {
+                val newLocale = Locale("zh")
+                Locale.setDefault(newLocale)
+                val configuration = resources.configuration
+                configuration.setLocale(newLocale)
+                resources.updateConfiguration(configuration, resources.displayMetrics)
+                recreate()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
     override fun onResume() {
         super.onResume()
         binding.adView.resume()

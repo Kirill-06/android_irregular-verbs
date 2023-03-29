@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">irregular-verbs</string>
+    <string name="app_name" translatable="false">Irregular Verbs</string>
+    <string name="english" translatable="false">English</string>
+    <string name="russian" translatable="false">Russian</string>
+    <string name="chinese" translatable="false">Chinese</string>
+    <string name="change" translatable="false">Change the language</string>
 </resources>
