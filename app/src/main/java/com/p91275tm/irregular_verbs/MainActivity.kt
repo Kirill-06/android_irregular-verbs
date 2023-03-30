@@ -1,6 +1,8 @@
 package com.p91275tm.irregular_verbs
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
@@ -32,6 +34,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        val sharedPref = getSharedPreferences("my_app_preferences", Context.MODE_PRIVATE)
+        val language = sharedPref.getString("language", "en")
+        val newLocale = Locale(language)
+        Locale.setDefault(newLocale)
+        val configuration = resources.configuration
+        configuration.setLocale(newLocale)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+        setContentView(R.layout.activity_main)
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         var isFirstRun = sharedPrefs.getBoolean("isFirstRun", true)
         if (isFirstRun) {
@@ -66,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                 val configuration = resources.configuration
                 configuration.setLocale(newLocale)
                 resources.updateConfiguration(configuration, resources.displayMetrics)
+                saveLanguage("en")
                 recreate()
                 return true
             }
@@ -75,6 +86,7 @@ class MainActivity : AppCompatActivity() {
                 val configuration = resources.configuration
                 configuration.setLocale(newLocale)
                 resources.updateConfiguration(configuration, resources.displayMetrics)
+                saveLanguage("ru")
                 recreate()
                 return true
             }
@@ -84,6 +96,7 @@ class MainActivity : AppCompatActivity() {
                 val configuration = resources.configuration
                 configuration.setLocale(newLocale)
                 resources.updateConfiguration(configuration, resources.displayMetrics)
+                saveLanguage("zh")
                 recreate()
                 return true
             }
@@ -96,6 +109,10 @@ class MainActivity : AppCompatActivity() {
             }
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+    private fun saveLanguage(language: String) {
+        val sharedPref = getSharedPreferences("my_app_preferences", Context.MODE_PRIVATE)
+        sharedPref.edit().putString("language", language).apply()
     }
     override fun onResume() {
         super.onResume()
