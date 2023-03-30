@@ -89,6 +89,8 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.card -> {
                 val intent = Intent(this, CardActivity::class.java)
+                val currentLocale = Locale.getDefault()
+                intent.putExtra("language", currentLocale.language)
                 startActivity(intent)
                 return true
             }
