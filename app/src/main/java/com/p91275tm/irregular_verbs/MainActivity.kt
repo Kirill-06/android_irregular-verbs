@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.p91275tm.irregular_verbs.databinding.ActivityMainBinding
+import com.yandex.metrica.impl.ob.db
 import com.yandex.mobile.ads.banner.AdSize
 import com.yandex.mobile.ads.common.AdRequestError
 import com.yandex.mobile.ads.common.InitializationListener
@@ -86,6 +87,11 @@ class MainActivity : AppCompatActivity() {
                 recreate()
                 return true
             }
+            R.id.card -> {
+                val intent = Intent(this, CardActivity::class.java)
+                startActivity(intent)
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -121,9 +127,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() = with(binding) {
-        val db = AppDatabase.irregularVerbsDao(this@MainActivity)
         Rview.layoutManager = LinearLayoutManager(this@MainActivity)
         Rview.adapter = adapter
+        val db = AppDatabase.irregularVerbsDao(this@MainActivity)
         db.irregularVerbsDao().getAllWords().asLiveData().observe(this@MainActivity) { it ->
             it.forEach{
                 val text = Word(it.base_form, it.past_simple, it.past_participle, it.translation)
