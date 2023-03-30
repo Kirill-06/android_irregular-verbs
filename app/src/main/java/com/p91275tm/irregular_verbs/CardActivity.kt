@@ -2,11 +2,14 @@ package com.p91275tm.irregular_verbs
 
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.card.MaterialCardView
@@ -20,12 +23,15 @@ class CardActivity : AppCompatActivity() {
     private lateinit var wordsArray: Array<Word>
     private var isFront = true
     private var numberCard = 0
+    var pref: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card)
+        pref = getSharedPreferences("TABLE", Context.MODE_PRIVATE)
+        numberCard = pref?.getInt("counter", 0)!!
         val db = AppDatabase.irregularVerbsDao(this@CardActivity)
         val wordsFlow = db.irregularVerbsDao().getAllWords()
         lifecycleScope.launch {
@@ -51,8 +57,11 @@ class CardActivity : AppCompatActivity() {
             val baseForm = findViewById<TextView>(R.id.base_formCard)
             val pastSimple = findViewById<TextView>(R.id.past_simpleCard)
             val pastParticiple = findViewById<TextView>(R.id.past_participleCard)
-
-            buttonLeft.visibility = View.INVISIBLE
+            if (numberCard == 0) {
+                buttonLeft.visibility = View.INVISIBLE
+            } else {
+                buttonLeft.visibility = View.VISIBLE
+            }
             buttonRight.setOnClickListener {
                 numberCard++
                 buttonLeft.visibility = View.VISIBLE
@@ -87,9 +96,7 @@ class CardActivity : AppCompatActivity() {
                 pastSimple.text = wordsArray[numberCard].past_simple
                 pastParticiple.text = wordsArray[numberCard].past_participle
             }
-        }
-        else
-        {
+        } else {
             val front = findViewById<TextView>(R.id.Card_Front) as MaterialCardView
             val back = findViewById<TextView>(R.id.Card_Back) as MaterialCardView
             val buttonLeft = findViewById<View>(R.id.buttonLeft)
@@ -97,7 +104,11 @@ class CardActivity : AppCompatActivity() {
             val baseForm = findViewById<TextView>(R.id.base_formCard)
             val pastSimple = findViewById<TextView>(R.id.past_simpleCard)
             val pastParticiple = findViewById<TextView>(R.id.past_participleCard)
-            buttonLeft.visibility = View.INVISIBLE
+            if (numberCard == 0) {
+                buttonLeft.visibility = View.INVISIBLE
+            } else {
+                buttonLeft.visibility = View.VISIBLE
+            }
             buttonRight.setOnClickListener {
                 numberCard++
                 buttonLeft.visibility = View.VISIBLE
@@ -165,6 +176,29 @@ class CardActivity : AppCompatActivity() {
         }
     }
 
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            if (intent.getStringExtra("language") == "ru") {
+                val translation = findViewById<TextView>(R.id.transitionCard)
+                val baseForm = findViewById<TextView>(R.id.base_formCard)
+                val pastSimple = findViewById<TextView>(R.id.past_simpleCard)
+                val pastParticiple = findViewById<TextView>(R.id.past_participleCard)
+                translation.text = wordsArray[numberCard].translation
+                baseForm.text = wordsArray[numberCard].base_form
+                pastSimple.text = wordsArray[numberCard].past_simple
+                pastParticiple.text = wordsArray[numberCard].past_participle
+            } else {
+                val baseForm = findViewById<TextView>(R.id.base_formCard)
+                val pastSimple = findViewById<TextView>(R.id.past_simpleCard)
+                val pastParticiple = findViewById<TextView>(R.id.past_participleCard)
+                baseForm.text = wordsArray[numberCard].base_form
+                pastSimple.text = wordsArray[numberCard].past_simple
+                pastParticiple.text = wordsArray[numberCard].past_participle
+            }
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         val myMenuItem = menu.findItem(R.id.card)
@@ -182,5 +216,25 @@ class CardActivity : AppCompatActivity() {
             }
         }
         return true
+    }
+    private fun saveData(res: Int)
+    {
+        val editor = pref?.edit()
+        editor?.putInt("counter", res)
+        editor?.apply()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        saveData(numberCard)
+    }
+    override fun onResume() {
+        super.onResume()
+        saveData(numberCard)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveData(numberCard)
     }
 }
