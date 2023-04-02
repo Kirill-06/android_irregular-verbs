@@ -20,6 +20,9 @@ import com.yandex.metrica.impl.ob.db
 import com.yandex.mobile.ads.banner.AdSize
 import com.yandex.mobile.ads.common.AdRequestError
 import com.yandex.mobile.ads.common.InitializationListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 import com.yandex.mobile.ads.common.MobileAds as YandexMobileAds
 import com.yandex.mobile.ads.common.AdRequest as YandexAdRequst
@@ -45,10 +48,9 @@ class MainActivity : AppCompatActivity() {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         var isFirstRun = sharedPrefs.getBoolean("isFirstRun", true)
         if (isFirstRun) {
-            Thread {
-                this.deleteDatabase("irregular_verbs")
+            CoroutineScope(Dispatchers.IO).launch {
                 completion()
-            }.start()
+            }
 
             val editor = sharedPrefs.edit()
             editor.putBoolean("isFirstRun", false)

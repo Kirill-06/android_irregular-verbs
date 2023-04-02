@@ -2,7 +2,7 @@
     <string name="app_name" translatable="false">Irregular Verbs</string>
     <string name="english" translatable="false">English</string>
     <string name="russian" translatable="false">Russian</string>
-    <string name="chinese" translatable="false">Chinese</string>
+    <string name="chinese" translatable="false">中文</string>
     <string name="change" translatable="false">Change the language</string>
     <string name="card" translatable="false">Cards</string>
 </resources>
