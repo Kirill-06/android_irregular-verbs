@@ -1,6 +1,8 @@
 package com.p91275tm.irregular_verbs
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
@@ -14,9 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.p91275tm.irregular_verbs.databinding.ActivityMainBinding
+import com.yandex.metrica.impl.ob.db
 import com.yandex.mobile.ads.banner.AdSize
 import com.yandex.mobile.ads.common.AdRequestError
 import com.yandex.mobile.ads.common.InitializationListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 import com.yandex.mobile.ads.common.MobileAds as YandexMobileAds
 import com.yandex.mobile.ads.common.AdRequest as YandexAdRequst
@@ -31,13 +37,20 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        val sharedPref = getSharedPreferences("my_app_preferences", Context.MODE_PRIVATE)
+        val language = sharedPref.getString("language", "en")
+        val newLocale = Locale(language)
+        Locale.setDefault(newLocale)
+        val configuration = resources.configuration
+        configuration.setLocale(newLocale)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+        setContentView(R.layout.activity_main)
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         var isFirstRun = sharedPrefs.getBoolean("isFirstRun", true)
         if (isFirstRun) {
-            Thread {
-                this.deleteDatabase("irregular_verbs")
+            CoroutineScope(Dispatchers.IO).launch {
                 completion()
-            }.start()
+            }
 
             val editor = sharedPrefs.edit()
             editor.putBoolean("isFirstRun", false)
@@ -65,6 +78,7 @@ class MainActivity : AppCompatActivity() {
                 val configuration = resources.configuration
                 configuration.setLocale(newLocale)
                 resources.updateConfiguration(configuration, resources.displayMetrics)
+                saveLanguage("en")
                 recreate()
                 return true
             }
@@ -74,6 +88,7 @@ class MainActivity : AppCompatActivity() {
                 val configuration = resources.configuration
                 configuration.setLocale(newLocale)
                 resources.updateConfiguration(configuration, resources.displayMetrics)
+                saveLanguage("ru")
                 recreate()
                 return true
             }
@@ -83,11 +98,23 @@ class MainActivity : AppCompatActivity() {
                 val configuration = resources.configuration
                 configuration.setLocale(newLocale)
                 resources.updateConfiguration(configuration, resources.displayMetrics)
+                saveLanguage("zh")
                 recreate()
+                return true
+            }
+            R.id.card -> {
+                val intent = Intent(this, CardActivity::class.java)
+                val currentLocale = Locale.getDefault()
+                intent.putExtra("language", currentLocale.language)
+                startActivity(intent)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+    private fun saveLanguage(language: String) {
+        val sharedPref = getSharedPreferences("my_app_preferences", Context.MODE_PRIVATE)
+        sharedPref.edit().putString("language", language).apply()
     }
     override fun onResume() {
         super.onResume()
@@ -121,9 +148,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() = with(binding) {
-        val db = AppDatabase.irregularVerbsDao(this@MainActivity)
         Rview.layoutManager = LinearLayoutManager(this@MainActivity)
         Rview.adapter = adapter
+        val db = AppDatabase.irregularVerbsDao(this@MainActivity)
         db.irregularVerbsDao().getAllWords().asLiveData().observe(this@MainActivity) { it ->
             it.forEach{
                 val text = Word(it.base_form, it.past_simple, it.past_participle, it.translation)
