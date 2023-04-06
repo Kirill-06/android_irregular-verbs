@@ -15,9 +15,9 @@
             <item
                 android:id="@+id/russian"
                 android:title="@string/russian" />
-            <item
+            <!--<item
                 android:id="@+id/chinese"
-                android:title="@string/chinese" />
+                android:title="@string/chinese" />-->
         </menu>
     </item>
     <item

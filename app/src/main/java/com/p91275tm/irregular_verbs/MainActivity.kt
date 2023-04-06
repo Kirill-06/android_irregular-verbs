@@ -79,7 +79,8 @@ class MainActivity : AppCompatActivity() {
                 configuration.setLocale(newLocale)
                 resources.updateConfiguration(configuration, resources.displayMetrics)
                 saveLanguage("en")
-                recreate()
+                finish()
+                startActivity(Intent(this, MainActivity::class.java))
                 return true
             }
             R.id.russian -> {
@@ -89,10 +90,11 @@ class MainActivity : AppCompatActivity() {
                 configuration.setLocale(newLocale)
                 resources.updateConfiguration(configuration, resources.displayMetrics)
                 saveLanguage("ru")
-                recreate()
+                finish()
+                startActivity(Intent(this, MainActivity::class.java))
                 return true
             }
-            R.id.chinese -> {
+            /*R.id.chinese -> {
                 val newLocale = Locale("zh")
                 Locale.setDefault(newLocale)
                 val configuration = resources.configuration
@@ -101,11 +103,10 @@ class MainActivity : AppCompatActivity() {
                 saveLanguage("zh")
                 recreate()
                 return true
-            }
+            }*/
             R.id.card -> {
                 val intent = Intent(this, CardActivity::class.java)
-                val currentLocale = Locale.getDefault()
-                intent.putExtra("language", currentLocale.language)
+                intent.putExtra("language", Locale.getDefault().language)
                 startActivity(intent)
                 return true
             }
