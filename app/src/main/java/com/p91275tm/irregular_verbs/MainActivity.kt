@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdRequest
@@ -44,7 +45,6 @@ class MainActivity : AppCompatActivity() {
         val configuration = resources.configuration
         configuration.setLocale(newLocale)
         resources.updateConfiguration(configuration, resources.displayMetrics)
-        setContentView(R.layout.activity_main)
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         var isFirstRun = sharedPrefs.getBoolean("isFirstRun", true)
         if (isFirstRun) {
@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun saveLanguage(language: String) {
-        val sharedPref = getSharedPreferences("my_app_preferences", Context.MODE_PRIVATE)
+        val sharedPref = getSharedPreferences("my_app_preferences", MODE_PRIVATE)
         sharedPref.edit().putString("language", language).apply()
     }
     override fun onResume() {

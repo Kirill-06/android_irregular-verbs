@@ -1,27 +1,31 @@
 package com.p91275tm.irregular_verbs
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.Configuration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.p91275tm.irregular_verbs.databinding.WordsBinding
+import org.intellij.lang.annotations.Language
 import java.util.*
 import kotlin.collections.ArrayList
 
 class WerbsAdapter: RecyclerView.Adapter<WerbsAdapter.WerbsHolder>() {
     private val list = ArrayList<Word>()
-    class WerbsHolder(item: View): RecyclerView.ViewHolder(item) {
+
+    class WerbsHolder(item: View) : RecyclerView.ViewHolder(item) {
         private val binding = WordsBinding.bind(item)
-        fun bind(words: Word) = with(binding){
+        fun bind(words: Word) = with(binding) {
             if (Locale.getDefault().language == "ru") {
+                translation.visibility = View.VISIBLE
                 baseForm.text = words.base_form
                 pastSimple.text = words.past_simple
                 pastParticiple.text = words.past_participle
                 translation.text = words.translation
-            }
-            else
-            {
+            } else {
+                translation.visibility = View.GONE
                 baseForm.text = words.base_form
                 pastSimple.text = words.past_simple
                 pastParticiple.text = words.past_participle
@@ -39,15 +43,15 @@ class WerbsAdapter: RecyclerView.Adapter<WerbsAdapter.WerbsHolder>() {
     }
 
     override fun onBindViewHolder(holder: WerbsHolder, position: Int) {
-      holder.bind(list[position])
+        holder.bind(list[position])
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addword(word: Word)
-    {
+    fun addword(word: Word) {
         list.add(word)
         notifyDataSetChanged()
     }
+
     @SuppressLint("NotifyDataSetChanged")
     fun clearList() {
         list.clear()
