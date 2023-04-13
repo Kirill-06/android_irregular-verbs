@@ -59,7 +59,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        init()
+        var languge = Languge(language.toString())
+        init(languge)
         initserch()
         initadMob()
         initadYandex()
@@ -148,9 +149,10 @@ class MainActivity : AppCompatActivity() {
         binding.adView.loadAd(adRequest)
     }
 
-    private fun init() = with(binding) {
+    private fun init(language: Languge) = with(binding) {
         Rview.layoutManager = LinearLayoutManager(this@MainActivity)
         Rview.adapter = adapter
+        adapter.languch(language)
         val db = AppDatabase.irregularVerbsDao(this@MainActivity)
         db.irregularVerbsDao().getAllWords().asLiveData().observe(this@MainActivity) { it ->
             it.forEach{
