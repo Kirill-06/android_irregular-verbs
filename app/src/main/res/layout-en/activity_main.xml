@@ -13,10 +13,11 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         app:adSize="BANNER"
-        app:adUnitId="ca-app-pub-9871350968730823/2345021724"
+        app:adUnitId="ca-app-pub-9332200304195668/4795615156"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></com.google.android.gms.ads.AdView>
+        app:layout_constraintTop_toTopOf="parent">
+    </com.google.android.gms.ads.AdView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/Card"
