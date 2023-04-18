@@ -8,6 +8,7 @@ import android.preference.PreferenceManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -59,6 +60,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        if(language == "en") {
+            binding.translationInfo.visibility = View.GONE
+        }
+        else{
+            binding.translationInfo.visibility = View.VISIBLE
+        }
         var languge = Languge(language.toString())
         init(languge)
         initserch()

@@ -23,8 +23,7 @@
     <item
         android:id="@+id/card"
         android:title="@string/card"
-        android:icon="@drawable/baseline_cards"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:orderInCategory="1"
         />
 </menu>

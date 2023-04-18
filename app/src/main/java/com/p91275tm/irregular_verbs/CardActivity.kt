@@ -72,7 +72,8 @@ class CardActivity : AppCompatActivity() {
                     front_anim.start()
                     isFront = true
                 }
-                binding.transitionCard!!.text = wordsArray[numberCard].translation
+                binding.baseFormCardF.visibility = View.GONE
+                binding.transitionCard.text = wordsArray[numberCard].translation
                 binding.baseFormCard.text = wordsArray[numberCard].base_form
                 binding.pastSimpleCard.text = wordsArray[numberCard].past_simple
                 binding.pastParticipleCard.text = wordsArray[numberCard].past_participle
@@ -91,7 +92,8 @@ class CardActivity : AppCompatActivity() {
                     front_anim.start()
                     isFront = true
                 }
-                binding.transitionCard!!.text = wordsArray[numberCard].translation
+                binding.baseFormCardF.visibility = View.GONE
+                binding.transitionCard.text = wordsArray[numberCard].translation
                 binding.baseFormCard.text = wordsArray[numberCard].base_form
                 binding.pastSimpleCard.text = wordsArray[numberCard].past_simple
                 binding.pastParticipleCard.text = wordsArray[numberCard].past_participle
@@ -112,7 +114,9 @@ class CardActivity : AppCompatActivity() {
                     front_anim.start()
                     isFront = true
                 }
-                binding.baseFormCard.text = wordsArray[numberCard].base_form
+                binding.baseFormCard.visibility = View.GONE
+                binding.transitionCard.visibility = View.GONE
+                binding.baseFormCardF.text = wordsArray[numberCard].base_form
                 binding.pastSimpleCard.text = wordsArray[numberCard].past_simple
                 binding.pastParticipleCard.text = wordsArray[numberCard].past_participle
             }
@@ -130,7 +134,9 @@ class CardActivity : AppCompatActivity() {
                     front_anim.start()
                     isFront = true
                 }
-                binding.baseFormCard.text = wordsArray[numberCard].base_form
+                binding.baseFormCard.visibility = View.GONE
+                binding.transitionCard.visibility = View.GONE
+                binding.baseFormCardF.text = wordsArray[numberCard].base_form
                 binding.pastSimpleCard.text = wordsArray[numberCard].past_simple
                 binding.pastParticipleCard.text = wordsArray[numberCard].past_participle
             }
@@ -171,12 +177,15 @@ class CardActivity : AppCompatActivity() {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             if (intent.getStringExtra("language") == "ru") {
-                binding.transitionCard!!.text = wordsArray[numberCard].translation
+                binding.baseFormCardF.visibility = View.GONE
+                binding.transitionCard.text = wordsArray[numberCard].translation
                 binding.baseFormCard.text = wordsArray[numberCard].base_form
                 binding.pastSimpleCard.text = wordsArray[numberCard].past_simple
                 binding.pastParticipleCard.text = wordsArray[numberCard].past_participle
             } else {
-                binding.baseFormCard.text = wordsArray[numberCard].base_form
+                binding.baseFormCard.visibility = View.GONE
+                binding.transitionCard.visibility = View.GONE
+                binding.baseFormCardF.text = wordsArray[numberCard].base_form
                 binding.pastSimpleCard.text = wordsArray[numberCard].past_simple
                 binding.pastParticipleCard.text = wordsArray[numberCard].past_participle
             }
